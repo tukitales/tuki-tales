@@ -1,0 +1,3 @@
+# Netlify SPA-style redirects
+# All unknown paths fall back to index.html (single-page site)
+/*    /index.html   200

@@ -1,45 +1,47 @@
-# Tuki Tales
+# Tuki Tales — Marketing Website
 
-> Tuki Tales — official repository.
+A marketing website for the **Tuki Tales** YouTube channel — Hindi Nursery Rhymes & Kids Poems for ages 1-6.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-early%20development-orange)]()
+**Live site:** https://tukitales.netlify.app/
 
-## Overview
+## Tech Stack
 
-Tuki Tales is an early-stage project. This repository will host the source code,
-assets, and documentation as the project takes shape.
+- Pure static HTML / CSS / JavaScript (no build step)
+- Auto-deployed by Netlify from the `main` branch of this repo
+- Mobile-responsive, kid-friendly design
+- Lazy-loaded YouTube thumbnails + modal video player
+- SEO meta tags + Open Graph + Twitter cards
 
-## Repository Structure
+## File Structure
 
 ```
 tuki-tales/
-├── docs/                # Project documentation and design notes
-├── src/                 # Source code (to be added)
-├── assets/              # Game / app assets (to be added)
-├── .gitignore
-├── LICENSE
-├── README.md
-└── CONTRIBUTING.md
+├── index.html       # Main marketing page
+├── styles.css       # Styles (pink/yellow kid-friendly palette)
+├── app.js           # Video grid renderer + modal player
+├── netlify.toml     # Netlify deploy config
+├── _redirects        # Netlify redirect rules
+├── README.md         # This file
+└── LICENSE           # MIT
 ```
 
-## Getting Started
+## Local Development
 
-This repository is in bootstrap mode. Once the source tree lands, you'll find
-setup instructions here.
+Just open `index.html` in a browser. No build step, no dependencies.
+
+Or, to run a tiny local server:
 
 ```bash
-git clone https://github.com/tukitales/tuki-tales.git
-cd tuki-tales
-# further setup steps will appear as the project grows
+python3 -m http.server 8000
+# open http://localhost:8000
 ```
 
-## Contributing
+## Deploying
 
-Contributions are welcome once the project stabilizes. In the meantime, please
-open an issue before submitting a pull request. See [CONTRIBUTING.md](CONTRIBUTING.md)
-for guidelines.
+Push to `main` — Netlify auto-deploys within ~30 seconds.
 
-## License
+## Channel
 
-Released under the [MIT License](LICENSE).
+- **YouTube:** https://www.youtube.com/@Tuki-Tales
+- **Channel ID:** UCn1SrgsVonl3OUb9m5oM_vw
+- **Content:** Hindi Nursery Rhymes, Kids Poems, Cartoon Videos for ages 1-6
