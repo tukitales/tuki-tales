@@ -81,9 +81,9 @@
   ];
 
   var SEED_PLAYLISTS = [
-    { id: 'PLENKsdD4mZME', title: 'Kaalu Madari Aaya & Popular Rhymes — Hindi Kids Songs Collection', videoId: '6NRaF2sK6c0' },
-    { id: 'PLRbRDLC3Vcf8', title: 'Superhit Hindi Kids Songs Collection', videoId: 'lPWzqsULLqI' },
-    { id: 'PLGwpHJ3N3wbA', title: 'Kids Learning Songs | ABC, Numbers & Counting', videoId: 'HISXIBiVW-g' }
+    { id: 'PLENKsdD4mZME', title: 'Kaalu Madari Aaya & Popular Rhymes — Hindi Kids Songs Collection', firstVideoId: '6NRaF2sK6c0' },
+    { id: 'PLRbRDLC3Vcf8', title: 'Superhit Hindi Kids Songs Collection', firstVideoId: 'lPWzqsULLqI' },
+    { id: 'PLGwpHJ3N3wbA', title: 'Kids Learning Songs | ABC, Numbers & Counting', firstVideoId: 'HISXIBiVW-g' }
   ];
 
   // ---------------- DOM helpers ----------------
@@ -119,8 +119,14 @@
     t.innerHTML = s;
     return t.value;
   }
+  // Use the highest-resolution thumbnail available directly from YouTube's CDN.
+  // No API key needed — these URLs are public and work for any video ID.
   function thumbUrl(id) { return 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'; }
   function thumbUrlHd(id) { return 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg'; }
+  // For playlists, we always use the first video's thumbnail (most reliable).
+  function playlistThumbUrl(firstVideoId) {
+    return firstVideoId ? thumbUrlHd(firstVideoId) : null;
+  }
 
   // ---------------- Live fetch helpers ----------------
   // Use api.allorigins.win as a CORS proxy
@@ -619,14 +625,22 @@
     });
 
     var thumb = el('div', { class: 'playlist-thumb' });
-    var imgSrc = p.thumb || (p.firstVideoId ? thumbUrl(p.firstVideoId) : null);
+    // Always prefer the first video's maxres thumbnail — guaranteed available, no API needed.
+    // Fall back to hqdefault if maxres fails (some videos don't have HD).
+    var firstVideoId = p.firstVideoId || p.videoId;
+    var imgSrc = (firstVideoId ? thumbUrlHd(firstVideoId) : null) || p.thumb;
     if (imgSrc) {
       var img = el('img', { src: imgSrc, alt: p.title || 'Playlist thumbnail', loading: 'lazy' });
       img.style.opacity = '0';
       img.style.transition = 'opacity .4s';
       img.addEventListener('load', function () { img.style.opacity = '1'; });
+      // Cascade fallback: maxres → hq → placeholder
       img.addEventListener('error', function () {
-        if (p.firstVideoId) img.src = thumbUrl(p.firstVideoId);
+        if (firstVideoId && img.src !== thumbUrl(firstVideoId)) {
+          img.src = thumbUrl(firstVideoId);
+        } else {
+          img.style.display = 'none';
+        }
       });
       thumb.appendChild(img);
     }

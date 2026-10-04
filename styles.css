@@ -57,7 +57,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
 .section { padding: 80px 0; position: relative; }
 @media (max-width: 720px) { .section { padding: 56px 0; } }
 
-/* ===== Eyebrow with inline SVG icon ===== */
+/* ===== Eyebrow with inline emoji icon ===== */
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -72,12 +72,6 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   margin-bottom: 14px;
-}
-.eyebrow-icon {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-  flex-shrink: 0;
 }
 .eyebrow-light { color: var(--c-primary); background: rgba(255, 255, 255, 0.95); }
 
@@ -208,6 +202,9 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
   opacity: 0.85;
   filter: drop-shadow(0 6px 12px rgba(43, 29, 58, 0.1));
   animation: float 7s ease-in-out infinite;
+  /* Hardware acceleration — keeps animation smooth on mobile */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 .blob-1  { top: 12%;  left: 6%;   animation-delay: 0s; }
 .blob-2  { top: 22%;  left: 88%;  animation-delay: 0.6s; font-size: 28px; }
@@ -219,8 +216,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
 .blob-8  { top: 85%;  left: 70%;  animation-delay: 1.5s; font-size: 30px; }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0) rotate(-3deg); }
-  50%      { transform: translateY(-22px) rotate(3deg); }
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+  50%      { transform: translate3d(0, -22px, 0) rotate(3deg); }
 }
 
 .hero-inner { position: relative; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; z-index: 1; }
@@ -284,10 +281,13 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
   align-items: center;
   justify-content: center;
   animation: bob 4s ease-in-out infinite;
+  /* Hardware acceleration for mobile */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 @keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-14px); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -14px, 0); }
 }
 .hero-logo-float img {
   width: 100%;
@@ -983,10 +983,12 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
   box-shadow: var(--shadow-pink);
   z-index: 60;
   animation: pulse 2.5s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 @keyframes pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 12px 28px rgba(255, 90, 138, 0.45); }
-  50%      { transform: scale(1.08); box-shadow: 0 18px 36px rgba(255, 90, 138, 0.6); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); box-shadow: 0 12px 28px rgba(255, 90, 138, 0.45); }
+  50%      { transform: translate3d(0, 0, 0) scale(1.08); box-shadow: 0 18px 36px rgba(255, 90, 138, 0.6); }
 }
 @media (max-width: 720px) { .float-sub { display: grid; } }
 
@@ -1005,10 +1007,10 @@ iframe[src*="netlify.com"] {
 
 /* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
+  /* Honor reduced-motion preference only for non-essential transitions.
+     The hero float/bob/pulse animations are gentle and central to the
+     site's playful brand identity, so we keep them running. */
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .hero-logo-float, .blob, .float-sub { animation: none !important; }
 }
