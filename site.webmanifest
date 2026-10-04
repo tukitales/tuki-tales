@@ -19,10 +19,16 @@
       "purpose": "any"
     },
     {
-      "src": "logo.png",
-      "sizes": "500x500",
+      "src": "logo-320.png",
+      "sizes": "320x320",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "logo-og.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "shortcuts": [

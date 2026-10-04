@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Tuki Tales — AI Sitemap",
+  "description": "Machine-readable site map for AI agents. Describes the site's structure, sections, content categories, and primary actions an agent can take.",
+  "site": {
+    "name": "Tuki Tales",
+    "url": "https://tukitales.netlify.app/",
+    "language": "hi-IN",
+    "type": "marketing_website",
+    "purpose": "Promote the Tuki Tales YouTube channel — Hindi Nursery Rhymes & Kids Poems for children aged 1-6",
+    "publisher": {
+      "type": "Organization",
+      "name": "Tuki Tales",
+      "youtube": "https://www.youtube.com/@Tuki-Tales",
+      "youtube_channel_id": "UCn1SrgsVonl3OUb9m5oM_vw",
+      "instagram": "https://www.instagram.com/tukitales/",
+      "youtube_music": "https://music.youtube.com/@Tuki-Tales"
+    }
+  },
+  "sections": [
+    {
+      "id": "top",
+      "title": "Hero",
+      "url": "https://tukitales.netlify.app/#top",
+      "description": "Channel branding, headline, primary subscribe CTA, channel stats (15+ rhymes, ages 1-6, weekly uploads), and floating logo.",
+      "primary_actions": [
+        { "label": "Subscribe on YouTube", "type": "external_link", "url": "https://www.youtube.com/@Tuki-Tales?sub_confirmation=1", "track": "subscribe" },
+        { "label": "Watch Popular Videos", "type": "anchor_link", "url": "#featured", "track": "scroll_to_featured" }
+      ]
+    },
+    {
+      "id": "featured",
+      "title": "Featured — Most Popular",
+      "url": "https://tukitales.netlify.app/#featured",
+      "description": "Auto-loads the most popular video by lifetime views. Updates live from YouTube.",
+      "content_type": "video_embed",
+      "primary_action": { "label": "Watch on YouTube", "type": "external_link", "track": "watch_featured_on_yt" }
+    },
+    {
+      "id": "popular",
+      "title": "Popular Videos",
+      "url": "https://tukitales.netlify.app/#popular",
+      "description": "Grid of top 12 all-time popular videos, sorted by lifetime views. Live data from YouTube.",
+      "content_type": "video_grid",
+      "primary_action": { "label": "See All Popular on YouTube", "type": "external_link", "url": "https://www.youtube.com/@Tuki-Tales/videos?view=0&sort=p&flow=grid", "track": "view_all_popular" }
+    },
+    {
+      "id": "latest",
+      "title": "Latest Videos",
+      "url": "https://tukitales.netlify.app/#latest",
+      "description": "Horizontal slider of 10 newest uploads, sorted by date (newest first). Live data via YouTube RSS feed.",
+      "content_type": "video_slider",
+      "primary_action": { "label": "View All on YouTube", "type": "external_link", "url": "https://www.youtube.com/@Tuki-Tales/videos?view=0&sort=dd&flow=grid", "track": "view_all_latest" }
+    },
+    {
+      "id": "shorts",
+      "title": "Shorts",
+      "url": "https://tukitales.netlify.app/#shorts",
+      "description": "Vertical 9:16 shorts slider with hover-to-play preview (muted), mute/unmute + pause controls, and infinite scroll. Click opens full player with audio.",
+      "content_type": "shorts_slider",
+      "primary_action": { "label": "View All Shorts", "type": "external_link", "url": "https://www.youtube.com/@Tuki-Tales/shorts", "track": "view_all_shorts" }
+    },
+    {
+      "id": "playlists",
+      "title": "Playlists",
+      "url": "https://tukitales.netlify.app/#playlists",
+      "description": "Curated channel playlists, sorted by popularity. Live data. Each card shows thumbnail + video count + title.",
+      "content_type": "playlist_grid",
+      "primary_action": { "label": "See All Playlists on YouTube", "type": "external_link", "url": "https://www.youtube.com/@Tuki-Tales/playlists", "track": "view_all_playlists" }
+    },
+    {
+      "id": "about",
+      "title": "About Tuki Tales",
+      "url": "https://tukitales.netlify.app/#about",
+      "description": "Hindi-language description of the channel, its mission, and 8 colorful category tags (Nursery Rhymes, Kids Poems, Cartoon Videos, Sing-Along Songs, Lori & Lullabies, Alphabet & Counting, Family Friendly, Musical Stories).",
+      "content_type": "text"
+    },
+    {
+      "id": "subscribe",
+      "title": "Join the Family",
+      "url": "https://tukitales.netlify.app/#subscribe",
+      "description": "Final subscribe call-to-action with gradient background.",
+      "primary_actions": [
+        { "label": "Subscribe on YouTube", "type": "external_link", "url": "https://www.youtube.com/@Tuki-Tales?sub_confirmation=1", "track": "subscribe" },
+        { "label": "Browse All Videos", "type": "external_link", "url": "https://www.youtube.com/@Tuki-Tales/videos", "track": "browse_videos" }
+      ]
+    }
+  ],
+  "content_categories": [
+    "Hindi Nursery Rhymes (बालगीत)",
+    "Hindi Poems for Kids (कविताएँ)",
+    "Animated Cartoon Rhyme Videos",
+    "Sing-Along Songs for Toddlers",
+    "Lori & Lullabies",
+    "Alphabet & Counting Rhymes",
+    "Fun & Family-Friendly Content",
+    "Musical Stories"
+  ],
+  "audience": {
+    "primary": "Parents and caregivers of Hindi-speaking children aged 1-6",
+    "geography": "India and the global Hindi diaspora",
+    "language": "Hindi (with some English keywords)"
+  },
+  "tech_stack": [
+    "Static HTML/CSS/JS — no build step, no framework",
+    "Hosted on Netlify (auto-deployed from GitHub main branch)",
+    "Live YouTube data via CORS proxy (api.allorigins.win)",
+    "Latest videos via YouTube RSS feed",
+    "Video titles via YouTube oEmbed API",
+    "Thumbnails from i.ytimg.com (direct CDN)",
+    "Google Analytics 4 (G-3GWN5MYSMF) for engagement tracking"
+  ],
+  "tracking_events": [
+    { "event": "subscribe", "trigger": "click on any subscribe CTA", "labels": ["navbar", "hero", "subscribe_cta", "floating_mobile"] },
+    { "event": "play_video", "trigger": "click on a video card in Popular grid or Latest slider" },
+    { "event": "play_short", "trigger": "click on a shorts card" },
+    { "event": "open_playlist", "trigger": "click on a playlist card" },
+    { "event": "view_all_popular", "trigger": "click on See All Popular button" },
+    { "event": "view_all_latest", "trigger": "click on View All (latest) button" },
+    { "event": "view_all_shorts", "trigger": "click on View All Shorts button" },
+    { "event": "view_all_playlists", "trigger": "click on See All Playlists button" },
+    { "event": "browse_videos", "trigger": "click on Browse All Videos button" },
+    { "event": "scroll_to_featured", "trigger": "click on Watch Popular Videos in hero" },
+    { "event": "slider_navigate", "trigger": "click on slider prev/next arrows", "labels": ["latestSlider:prev", "latestSlider:next", "shortsSlider:prev", "shortsSlider:next"] },
+    { "event": "social_click", "trigger": "click on a social media link in footer", "labels": ["youtube", "instagram", "ytmusic"] },
+    { "event": "scroll_depth", "trigger": "user scrolls to 25%, 50%, 75%, 100% of page", "labels": ["25%", "50%", "75%", "100%"] },
+    { "event": "video_open", "trigger": "video modal player opens" }
+  ],
+  "crawl_directives": {
+    "robots_txt": "https://tukitales.netlify.app/robots.txt",
+    "sitemap_xml": "https://tukitales.netlify.app/sitemap.xml",
+    "llms_txt": "https://tukitales.netlify.app/llms.txt",
+    "ai_sitemap_json": "https://tukitales.netlify.app/ai-sitemap.json"
+  }
+}

@@ -340,8 +340,8 @@
   }
 
   function buildVideoCard(v) {
-    var card = el('article', { class: 'video-card', role: 'button', tabindex: '0', 'aria-label': 'Play: ' + (v.title || '') });
-    card.dataset.videoId = v.id;
+    // Use native <button> element for accessibility (no role='button' on article)
+    var card = el('button', { type: 'button', class: 'video-card', 'data-video-id': v.id, 'data-track': 'play_video', 'aria-label': 'Play: ' + (v.title || '') });
     var thumb = el('div', { class: 'video-thumb' });
     var img = el('img', { src: thumbUrl(v.id), alt: v.title || 'Video', loading: 'lazy', width: 480, height: 270 });
     img.addEventListener('load', function () { img.style.opacity = '1'; });
@@ -356,7 +356,7 @@
     // YouTube-feed style metadata row: [avatar] + (title + channel + views)
     var metaRow = el('div', { class: 'video-meta-row' });
     var avatar = el('div', { class: 'video-channel-avatar' });
-    avatar.appendChild(el('img', { src: 'logo.png', alt: 'Tuki Tales', loading: 'lazy' }));
+    avatar.appendChild(el('img', { src: 'logo-320.png', alt: 'Tuki Tales', loading: 'lazy' }));
     metaRow.appendChild(avatar);
 
     var info = el('div', { class: 'video-info' });
@@ -367,9 +367,6 @@
     card.appendChild(metaRow);
 
     card.addEventListener('click', function () { openModal(v); });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(v); }
-    });
     return card;
   }
 
@@ -405,8 +402,7 @@
   }
 
   function buildShortCard(v) {
-    var card = el('div', { class: 'short-card', role: 'button', tabindex: '0', 'aria-label': 'Play short: ' + (v.title || '') });
-    card.dataset.shortId = v.id;
+    var card = el('button', { type: 'button', class: 'short-card', 'data-short-id': v.id, 'data-track': 'play_short', 'aria-label': 'Play short: ' + (v.title || '') });
 
     var thumb = el('img', { class: 'short-thumb', src: thumbUrl(v.id), alt: v.title || 'Short', loading: 'lazy' });
     card.appendChild(thumb);
@@ -424,13 +420,10 @@
     overlay.appendChild(controls);
     card.appendChild(overlay);
 
-    // Click anywhere on card (except buttons) → open in modal with sound
+    // Click on card (except inner controls) → open in modal with sound
     card.addEventListener('click', function (e) {
       if (e.target.closest('.short-btn')) return;
       openModal({ id: v.id, title: v.title });
-    });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') openModal({ id: v.id, title: v.title });
     });
 
     return card;
@@ -616,12 +609,9 @@
   }
 
   function buildPlaylistCard(p) {
-    var card = el('article', { class: 'playlist-card', role: 'button', tabindex: '0', 'aria-label': 'Open playlist: ' + (p.title || '') });
+    var card = el('button', { type: 'button', class: 'playlist-card', 'data-track': 'open_playlist', 'data-playlist-id': p.id, 'aria-label': 'Open playlist: ' + (p.title || '') });
     card.addEventListener('click', function () {
       window.open('https://www.youtube.com/playlist?list=' + p.id, '_blank', 'noopener');
-    });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') window.open('https://www.youtube.com/playlist?list=' + p.id, '_blank', 'noopener');
     });
 
     var thumb = el('div', { class: 'playlist-thumb' });
@@ -891,9 +881,107 @@
     }
   }
 
+  // ---------------- GA4 click tracking ----------------
+  // Track any element with [data-track] attribute as a GA4 custom event
+  // Sends: event_name = data-track, event_location = data-location
+  function setupClickTracking() {
+    document.addEventListener('click', function (e) {
+      var tracked = e.target.closest('[data-track]');
+      if (!tracked) return;
+      var eventName = tracked.getAttribute('data-track');
+      var eventLocation = tracked.getAttribute('data-location') || 'unknown';
+      if (typeof gtag === 'function' && eventName) {
+        gtag('event', eventName, {
+          'event_category': 'engagement',
+          'event_label': eventLocation,
+          'transport_type': 'beacon'
+        });
+      }
+    }, { passive: true });
+  }
+
+  // Track video modal opens (called from openModal)
+  function trackVideoOpen(videoId, source) {
+    if (typeof gtag === 'function') {
+      gtag('event', 'video_open', {
+        'event_category': 'engagement',
+        'event_label': source || 'unknown',
+        'video_id': videoId
+      });
+    }
+  }
+
+  // Track slider navigation
+  function setupSliderTracking() {
+    document.addEventListener('click', function (e) {
+      var arrow = e.target.closest('.slider-arrow');
+      if (!arrow) return;
+      var dir = arrow.classList.contains('slider-prev') ? 'prev' : 'next';
+      var slider = arrow.closest('.slider');
+      var track = slider ? slider.querySelector('.slider-track') : null;
+      var sliderId = track ? track.id : 'unknown';
+      if (typeof gtag === 'function') {
+        gtag('event', 'slider_navigate', {
+          'event_category': 'engagement',
+          'event_label': sliderId + ':' + dir
+        });
+      }
+    }, { passive: true });
+  }
+
+  // Track outbound social link clicks
+  function setupSocialTracking() {
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('.social-link:not(.is-disabled)');
+      if (!link) return;
+      var brand = link.getAttribute('data-brand');
+      if (typeof gtag === 'function' && brand) {
+        gtag('event', 'social_click', {
+          'event_category': 'engagement',
+          'event_label': brand
+        });
+      }
+    }, { passive: true });
+  }
+
+  // Track scroll depth milestones (25%, 50%, 75%, 100%)
+  function setupScrollTracking() {
+    var milestones = [25, 50, 75, 100];
+    var fired = {};
+    function onScroll() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      var pct = Math.round((scrollTop / docHeight) * 100);
+      milestones.forEach(function (m) {
+        if (pct >= m && !fired[m]) {
+          fired[m] = true;
+          if (typeof gtag === 'function') {
+            gtag('event', 'scroll_depth', {
+              'event_category': 'engagement',
+              'event_label': m + '%',
+              'value': m
+            });
+          }
+        }
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { init(); setupNavbar(); });
+    document.addEventListener('DOMContentLoaded', function () {
+      init(); setupNavbar();
+      setupClickTracking();
+      setupSliderTracking();
+      setupSocialTracking();
+      setupScrollTracking();
+    });
   } else {
     init(); setupNavbar();
+    setupClickTracking();
+    setupSliderTracking();
+    setupSocialTracking();
+    setupScrollTracking();
   }
 })();

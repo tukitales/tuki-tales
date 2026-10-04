@@ -361,6 +361,13 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  /* Reset button defaults */
+  border: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
 }
 .video-thumb {
   position: relative;
@@ -625,6 +632,12 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
   box-shadow: var(--shadow-md);
   cursor: pointer;
   transition: transform .25s, box-shadow .25s;
+  /* Reset button defaults */
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
 }
 @media (max-width: 720px) { .short-card { flex-basis: 160px; } }
 .short-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
@@ -738,6 +751,13 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  /* Reset button defaults */
+  border: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
 }
 .playlist-thumb {
   position: relative;
