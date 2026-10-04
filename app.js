@@ -450,9 +450,12 @@
       var isPlaying = false;
       var isMuted = true;
       var isPaused = false;
+      var isReady = false;          // YT iframe ready flag
+      var pendingCommands = [];    // queued until iframe is ready
 
       function ensureIframe() {
         if (iframe) return;
+        isReady = false;
         iframe = el('iframe', {
           class: 'short-iframe',
           src: 'https://www.youtube-nocookie.com/embed/' + id +
@@ -462,17 +465,43 @@
           allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
         });
         card.appendChild(iframe);
+
+        // Listen for YT iframe ready event so we know when it's safe to send commands
+        window.addEventListener('message', onIframeMessage);
+      }
+
+      function onIframeMessage(e) {
+        // Only handle messages from this iframe
+        if (!iframe || e.source !== iframe.contentWindow) return;
+        var data = e.data;
+        if (typeof data === 'string') {
+          try { data = JSON.parse(data); } catch (err) { return; }
+        }
+        // YouTube sends { event: 'onReady', ... } — flush pending commands
+        if (data && data.event === 'onReady') {
+          isReady = true;
+          // Send 'listening' so YT starts sending us events too
+          if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage(JSON.stringify({ event: 'listening' }), '*');
+          }
+          // Flush any queued commands
+          pendingCommands.forEach(function (cmd) { postCommand(cmd.func, cmd.args); });
+          pendingCommands = [];
+        }
       }
 
       function destroyIframe() {
         if (iframe) {
+          window.removeEventListener('message', onIframeMessage);
           iframe.src = 'about:blank';
-          iframe.parentNode.removeChild(iframe);
+          if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
           iframe = null;
         }
         isPlaying = false;
         isMuted = true;
         isPaused = false;
+        isReady = false;
+        pendingCommands = [];
         card.classList.remove('is-playing');
         var muteBtn = card.querySelector('.short-mute');
         var pauseBtn = card.querySelector('.short-pause');
@@ -480,9 +509,19 @@
         if (pauseBtn) { pauseBtn.innerHTML = '❚❚'; pauseBtn.classList.remove('is-active'); }
       }
 
-      function postCommand(func) {
+      function postCommand(func, args) {
         if (!iframe || !iframe.contentWindow) return;
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: func, args: [] }), '*');
+        var payload = JSON.stringify({ event: 'command', func: func, args: args || [] });
+        // If iframe isn't ready yet, queue the command — avoids "no listener" warnings
+        if (!isReady && func !== 'listen') {
+          pendingCommands.push({ func: func, args: args || [] });
+          return;
+        }
+        try {
+          iframe.contentWindow.postMessage(payload, '*');
+        } catch (err) {
+          // Swallow cross-origin postMessage errors (harmless during teardown)
+        }
       }
 
       function onEnter() {
@@ -543,8 +582,7 @@
           }
           if (isMuted) {
             postCommand('unMute');
-            postCommand('setVolume');
-            iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+            postCommand('setVolume', [100]);
             isMuted = false;
             muteBtn.innerHTML = '🔊';
             muteBtn.classList.add('is-active');
@@ -583,7 +621,7 @@
     var thumb = el('div', { class: 'playlist-thumb' });
     var imgSrc = p.thumb || (p.firstVideoId ? thumbUrl(p.firstVideoId) : null);
     if (imgSrc) {
-      var img = el('img', { src: imgSrc, alt: p.title || 'Playlist', loading: 'lazy' });
+      var img = el('img', { src: imgSrc, alt: p.title || 'Playlist thumbnail', loading: 'lazy' });
       img.style.opacity = '0';
       img.style.transition = 'opacity .4s';
       img.addEventListener('load', function () { img.style.opacity = '1'; });
@@ -592,15 +630,25 @@
       });
       thumb.appendChild(img);
     }
-    var overlay = el('div', { class: 'playlist-overlay' });
-    var pillContent = p.videoCount != null ? ('▶ ' + p.videoCount + ' videos') : '▶ View Playlist';
-    overlay.appendChild(el('div', { class: 'playlist-overlay-pill', html: pillContent }));
+
+    // YouTube-style overlay on right edge: stacked list icon + video count
+    var overlay = el('div', { class: 'playlist-thumb-overlay' });
+    if (p.videoCount != null) {
+      overlay.appendChild(el('div', { class: 'playlist-count', html: String(p.videoCount) }));
+    }
+    overlay.appendChild(el('svg', { class: 'playlist-list-icon', viewBox: '0 0 24 24', 'aria-hidden': 'true', html: '<path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/><path d="M20 14v8l-6-4 6-4z"/>' }));
     thumb.appendChild(overlay);
+
+    // Hover overlay: large play button (YT-style)
+    var playOverlay = el('div', { class: 'playlist-thumb-play' });
+    playOverlay.appendChild(el('svg', { viewBox: '0 0 24 24', 'aria-hidden': 'true', html: '<path d="M8 5v14l11-7z"/>' }));
+    thumb.appendChild(playOverlay);
     card.appendChild(thumb);
 
+    // Metadata block: title + channel + verified
     var info = el('div', { class: 'playlist-info' });
     info.appendChild(el('h3', { class: 'playlist-title', title: p.title || '' }, p.title || 'Playlist'));
-    info.appendChild(el('div', { class: 'playlist-meta', html: '<span>📚</span> View Playlist on YouTube' }));
+    info.appendChild(el('div', { class: 'playlist-meta', html: 'Tuki Tales <span class="verified" aria-label="Verified">✓</span> · View full playlist' }));
     card.appendChild(info);
     return card;
   }
@@ -775,9 +823,8 @@
       if (videos && videos.length) {
         renderFeatured(videos[0]);      // Most popular by lifetime
         renderPopularGrid(videos);
-        console.log('[Tuki Tales] Popular videos refreshed live:', videos.length);
       }
-    }).catch(function (e) { console.warn('[Tuki Tales] Popular fetch failed, using seed:', e.message); });
+    }).catch(function () { /* seed data already rendered */ });
 
     fetchLatestVideos(10).then(function (videos) {
       if (videos && videos.length) {
@@ -787,23 +834,20 @@
           // Show "X+" with a reasonable cap (e.g. 30+) since RSS returns ~15
           statEl.textContent = (videos.length >= 15 ? '15+' : videos.length);
         }
-        console.log('[Tuki Tales] Latest videos refreshed live:', videos.length);
       }
-    }).catch(function (e) { console.warn('[Tuki Tales] Latest fetch failed, using seed:', e.message); });
+    }).catch(function () { /* seed data already rendered */ });
 
     fetchShorts(12).then(function (shorts) {
       if (shorts && shorts.length) {
         renderShortsSlider(shorts);
-        console.log('[Tuki Tales] Shorts refreshed live:', shorts.length);
       }
-    }).catch(function (e) { console.warn('[Tuki Tales] Shorts fetch failed, using seed:', e.message); });
+    }).catch(function () { /* seed data already rendered */ });
 
     fetchPlaylists().then(function (playlists) {
       if (playlists && playlists.length) {
         renderPlaylists(playlists);
-        console.log('[Tuki Tales] Playlists refreshed live:', playlists.length);
       }
-    }).catch(function (e) { console.warn('[Tuki Tales] Playlists fetch failed, using seed:', e.message); });
+    }).catch(function () { /* seed data already rendered */ });
   }
 
   // Navbar: scroll state + mobile toggle

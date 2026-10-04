@@ -1,0 +1,82 @@
+# robots.txt for Tuki Tales (https://tukitales.netlify.app/)
+# Marketing website for the Tuki Tales YouTube channel — Hindi Nursery
+# Rhymes & Kids Poems for ages 1-6.
+
+# Default rule: allow all crawlers full access
+User-agent: *
+Allow: /
+Disallow:
+
+# Explicit allowlist for AI/LLM crawlers (some are blocked by default on
+# certain hosting providers, so we explicitly opt them in)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: ImagesiftBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: PiplBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://tukitales.netlify.app/sitemap.xml

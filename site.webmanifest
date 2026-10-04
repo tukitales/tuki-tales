@@ -1,0 +1,51 @@
+{
+  "name": "Tuki Tales — Hindi Nursery Rhymes & Kids Poems",
+  "short_name": "Tuki Tales",
+  "description": "Hindi Nursery Rhymes, Kids Poems & Cartoon Videos for children aged 1-6. New uploads every week!",
+  "lang": "hi-IN",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fff8ee",
+  "theme_color": "#ff5a8a",
+  "categories": ["education", "kids", "music", "entertainment"],
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Latest videos",
+      "short_name": "Latest",
+      "description": "Watch the newest Tuki Tales uploads",
+      "url": "/#latest",
+      "icons": [{ "src": "favicon.png", "sizes": "64x64", "type": "image/png" }]
+    },
+    {
+      "name": "Shorts",
+      "short_name": "Shorts",
+      "description": "Short vertical videos from Tuki Tales",
+      "url": "/#shorts",
+      "icons": [{ "src": "favicon.png", "sizes": "64x64", "type": "image/png" }]
+    },
+    {
+      "name": "Playlists",
+      "short_name": "Playlists",
+      "description": "Curated playlists of Tuki Tales videos",
+      "url": "/#playlists",
+      "icons": [{ "src": "favicon.png", "sizes": "64x64", "type": "image/png" }]
+    }
+  ]
+}

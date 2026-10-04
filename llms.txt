@@ -1,0 +1,77 @@
+# Tuki Tales
+
+> Hindi Nursery Rhymes, Kids Poems & Cartoon Videos for children aged 1-6.
+
+Tuki Tales is a Hindi-language YouTube channel producing musical, animated
+nursery rhymes, kids poems, and cartoon videos for children aged 1-6.
+New rhymes are uploaded every week. This is the official marketing site
+for the channel — a lightweight, static HTML/CSS/JS site that pulls live
+video data from YouTube without requiring any API key.
+
+## Channel
+
+- YouTube: https://www.youtube.com/@Tuki-Tales
+- Channel ID: UCn1SrgsVonl3OUb9m5oM_vw
+- Instagram: https://www.instagram.com/tukitales/
+- YouTube Music: https://music.youtube.com/@Tuki-Tales
+- (Placeholder, coming soon: Spotify, Apple Music, Facebook, X)
+
+## Content Categories
+
+- Hindi Nursery Rhymes (बालगीत)
+- Hindi Poems for Kids (कविताएँ)
+- Animated Cartoon Rhyme Videos
+- Sing-Along Songs for Toddlers
+- Lori & Lullabies
+- Alphabet & Counting Rhymes
+- Fun & Family-Friendly Content
+
+## Site Sections (in order)
+
+1. Hero — channel branding, subscribe CTA, channel stats
+2. Featured — most popular video by lifetime views (live)
+3. Popular Videos — grid of top 12 all-time popular videos (live)
+4. Latest Videos — slider of 10 newest uploads (live via RSS)
+5. Shorts — vertical 9:16 slider with hover-to-play (live)
+6. Playlists — channel playlists, popular on top (live)
+7. About — Hindi description of the channel
+8. Join Family — final subscribe CTA
+9. Footer — navigation, social links, copyright
+
+## Tech Stack
+
+- Pure static HTML/CSS/JS — no build step, no framework
+- Auto-deployed by Netlify from the GitHub `main` branch
+- Live YouTube data fetched via `api.allorigins.win` CORS proxy
+- Latest videos via YouTube RSS feed (no API key)
+- Video titles via YouTube oEmbed API (CORS-enabled)
+- Brand logo is a transparent PNG (500x500)
+- Favicon is a 64x64 derivative of the brand logo
+
+## Source Files
+
+- `index.html` — main page
+- `styles.css` — site styles
+- `app.js` — JavaScript (live data fetching + UI rendering)
+- `logo.png` — brand logo (transparent)
+- `favicon.png` — site favicon
+- `robots.txt` — crawler directives (includes AI/LLM allowlist)
+- `sitemap.xml` — XML sitemap
+- `site.webmanifest` — PWA manifest
+- `netlify.toml` — Netlify build config + security headers
+- `_redirects` — Netlify redirect rules
+
+## Repository
+
+- GitHub: https://github.com/tukitales/tuki-tales
+- Live: https://tukitales.netlify.app/
+
+## Audience
+
+Parents and caregivers of Hindi-speaking children aged 1-6, primarily in
+India and the global Hindi diaspora. Content is family-friendly, educational,
+and musical — designed to help children sing along, dance, and learn.
+
+## License
+
+MIT
