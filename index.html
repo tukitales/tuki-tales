@@ -13,19 +13,21 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Tuki Tales — Hindi Nursery Rhymes & Kids Poems" />
   <meta property="og:description" content="प्यारे बच्चों की दुनिया में आपका स्वागत है! Hindi Nursery Rhymes, Kids Poems और मजेदार Cartoon Videos for ages 1-6." />
-  <meta property="og:image" content="https://yt3.googleusercontent.com/aufQF17bT2TkIb-vCRTBy85hIu_Q4IcjUAzNrJIPVyOE0oIkzRmS4shh5w4c9eDqKWwpVx67Pw=s900-c-k-c0x00ffffff-no-rj" />
+  <meta property="og:image" content="https://tukitales.netlify.app/logo.png" />
   <meta property="og:url" content="https://tukitales.netlify.app/" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Tuki Tales — Hindi Nursery Rhymes & Kids Poems" />
   <meta name="twitter:description" content="Hindi Nursery Rhymes, Kids Poems & Cartoon Videos for kids aged 1-6." />
-  <meta name="twitter:image" content="https://yt3.googleusercontent.com/aufQF17bT2TkIb-vCRTBy85hIu_Q4IcjUAzNrJIPVyOE0oIkzRmS4shh5w4c9eDqKWwpVx67Pw=s900-c-k-c0x00ffffff-no-rj" />
+  <meta name="twitter:image" content="https://tukitales.netlify.app/logo.png" />
 
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
   <link rel="canonical" href="https://tukitales.netlify.app/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://i.ytimg.com" crossorigin />
+  <link rel="preconnect" href="https://api.allorigins.win" />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -35,14 +37,16 @@
 <header class="navbar" id="navbar">
   <div class="container nav-inner">
     <a href="#top" class="brand" aria-label="Tuki Tales home">
-      <span class="brand-mark" aria-hidden="true">🎵</span>
+      <img src="logo.png" alt="Tuki Tales" class="brand-logo" width="44" height="44" />
       <span class="brand-text">Tuki<span class="brand-accent">Tales</span></span>
     </a>
-    <nav class="nav-links" aria-label="Primary">
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="#featured">Featured</a>
+      <a href="#popular">Popular</a>
+      <a href="#latest">Latest</a>
+      <a href="#shorts">Shorts</a>
+      <a href="#playlists">Playlists</a>
       <a href="#about">About</a>
-      <a href="#videos">Videos</a>
-      <a href="#categories">Categories</a>
-      <a href="#subscribe">Subscribe</a>
     </nav>
     <a class="btn btn-primary nav-cta" href="https://www.youtube.com/@Tuki-Tales?sub_confirmation=1" target="_blank" rel="noopener">
       ▶ Subscribe
@@ -78,14 +82,14 @@
         <a class="btn btn-primary btn-lg" href="https://www.youtube.com/@Tuki-Tales?sub_confirmation=1" target="_blank" rel="noopener">
           🔔 Subscribe on YouTube
         </a>
-        <a class="btn btn-ghost btn-lg" href="#videos">
+        <a class="btn btn-ghost btn-lg" href="#featured">
           ▶ Watch Popular Videos
         </a>
       </div>
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-num">15+</span>
-          <span class="stat-lbl">Rhymes & Poems</span>
+          <span class="stat-num" id="statVideos">15+</span>
+          <span class="stat-lbl">Rhymes &amp; Poems</span>
         </div>
         <div class="stat">
           <span class="stat-num">1-6</span>
@@ -99,13 +103,120 @@
     </div>
     <div class="hero-media">
       <div class="hero-card">
-        <img src="https://yt3.googleusercontent.com/aufQF17bT2TkIb-vCRTBy85hIu_Q4IcjUAzNrJIPVyOE0oIkzRmS4shh5w4c9eDqKWwpVx67Pw=s900-c-k-c0x00ffffff-no-rj" alt="Tuki Tales channel logo" loading="eager" width="320" height="320" />
+        <img src="logo.png" alt="Tuki Tales logo" loading="eager" width="320" height="320" />
         <div class="hero-card-badge">📺 YouTube Channel</div>
       </div>
     </div>
   </div>
   <div class="hero-wave" aria-hidden="true">
     <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path d="M0,40 C240,90 480,90 720,60 C960,30 1200,10 1440,40 L1440,100 L0,100 Z" fill="#fff"/></svg>
+  </div>
+</section>
+
+<!-- ============== FEATURED VIDEO ============== -->
+<section class="featured section" id="featured">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">⭐ Featured — Most Popular</span>
+      <h2 class="section-title">हमारा सबसे लोकप्रिय वीडियो</h2>
+      <p class="section-sub">Lifetime most-viewed video on Tuki Tales</p>
+    </div>
+    <div class="featured-wrap">
+      <div class="video-frame video-frame-lg" id="featuredFrame">
+        <div class="video-frame-loading">Loading…</div>
+      </div>
+      <div class="featured-info">
+        <h3 id="featuredTitle">Loading…</h3>
+        <p id="featuredDesc">Fetching the most popular video from YouTube…</p>
+        <a class="btn btn-ghost" id="featuredLink" href="https://www.youtube.com/@Tuki-Tales/videos" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== POPULAR VIDEOS (live, all-time) ============== -->
+<section class="videos section" id="popular">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">🔥 Popular Videos</span>
+      <h2 class="section-title">बच्चों के सबसे पसंदीदा गीत</h2>
+      <p class="section-sub">Sorted by lifetime views — updates live from YouTube</p>
+    </div>
+    <div class="video-grid" id="videoGrid">
+      <div class="grid-skeleton">Loading popular videos…</div>
+    </div>
+    <div class="videos-cta">
+      <a class="btn btn-primary btn-lg" href="https://www.youtube.com/@Tuki-Tales/videos?view=0&amp;sort=p&amp;flow=grid" target="_blank" rel="noopener">
+        📺 See All Popular on YouTube
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== LATEST VIDEOS (slider, 10 latest) ============== -->
+<section class="slider-section section" id="latest">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">🆕 Latest Videos</span>
+      <h2 class="section-title">नए रिलीज़ हुए वीडियो</h2>
+      <p class="section-sub">Sorted by date — newest first</p>
+    </div>
+    <div class="slider">
+      <button class="slider-arrow slider-prev" data-target="latestSlider" aria-label="Previous">‹</button>
+      <div class="slider-track" id="latestSlider">
+        <div class="slider-skeleton">Loading latest videos…</div>
+      </div>
+      <button class="slider-arrow slider-next" data-target="latestSlider" aria-label="Next">›</button>
+    </div>
+    <div class="slider-footer">
+      <span class="slider-hint">← Swipe / use arrows →</span>
+      <a class="btn btn-primary" href="https://www.youtube.com/@Tuki-Tales/videos?view=0&amp;sort=dd&amp;flow=grid" target="_blank" rel="noopener">
+        📺 View All on YouTube
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SHORTS (slider, hover-to-play) ============== -->
+<section class="slider-section shorts-section section" id="shorts">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">⚡ Shorts</span>
+      <h2 class="section-title">छोटे वीडियो, बड़ी मस्ती</h2>
+      <p class="section-sub">Hover to play · click 🔊 for sound · no auto-advance</p>
+    </div>
+    <div class="slider">
+      <button class="slider-arrow slider-prev" data-target="shortsSlider" aria-label="Previous">‹</button>
+      <div class="slider-track slider-track-shorts" id="shortsSlider">
+        <div class="slider-skeleton">Loading shorts…</div>
+      </div>
+      <button class="slider-arrow slider-next" data-target="shortsSlider" aria-label="Next">›</button>
+    </div>
+    <div class="slider-footer">
+      <span class="slider-hint">← Swipe / use arrows →</span>
+      <a class="btn btn-ghost" href="https://www.youtube.com/@Tuki-Tales/shorts" target="_blank" rel="noopener">
+        📺 View All Shorts
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PLAYLISTS (live, popular on top) ============== -->
+<section class="playlists section" id="playlists">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">📚 Playlists</span>
+      <h2 class="section-title">कहानियों और गीतों के संग्रह</h2>
+      <p class="section-sub">Curated playlists from Tuki Tales — updates live</p>
+    </div>
+    <div class="playlist-grid" id="playlistGrid">
+      <div class="grid-skeleton">Loading playlists…</div>
+    </div>
+    <div class="videos-cta">
+      <a class="btn btn-primary btn-lg" href="https://www.youtube.com/@Tuki-Tales/playlists" target="_blank" rel="noopener">
+        📚 See All Playlists on YouTube
+      </a>
+    </div>
   </div>
 </section>
 
@@ -121,9 +232,14 @@
       <p>
         हमारा मकसद है बच्चों तक अच्छी संगीतमय कविताएँ पहुँचाना, जिनसे वे गुनगुनाएँ, झूमें और सीखें। नए Rhymes और Poems हर हफ्ते अपलोड होते हैं, तो जुड़े रहिए!
       </p>
-      <a class="btn btn-primary" href="https://www.youtube.com/@Tuki-Tales?sub_confirmation=1" target="_blank" rel="noopener">
-        🔔 Subscribe Now
-      </a>
+      <div class="about-tags">
+        <span>🎵 Hindi Nursery Rhymes</span>
+        <span>📖 Kids Poems</span>
+        <span>📺 Cartoon Videos</span>
+        <span>🌙 Lori &amp; Lullabies</span>
+        <span>🔤 Alphabet &amp; Counting</span>
+        <span>🎉 Family Friendly</span>
+      </div>
     </div>
     <div class="about-right">
       <ul class="about-list">
@@ -131,96 +247,9 @@
         <li><span class="ico">📖</span><div><strong>Hindi Poems for Kids</strong><p>प्यारी कविताएँ जो दिल को छू जाएँ</p></div></li>
         <li><span class="ico">📺</span><div><strong>Animated Cartoon Videos</strong><p>रंगीन animations के साथ musical stories</p></div></li>
         <li><span class="ico">🎤</span><div><strong>Sing-Along Songs</strong><p>Toddlers के लिए sing-along गीत</p></div></li>
-        <li><span class="ico">🌙</span><div><strong>Lori & Lullabies</strong><p>बच्चों को सुलाने वाली प्यारी लोरियाँ</p></div></li>
-        <li><span class="ico">🔤</span><div><strong>Alphabet & Counting</strong><p>सीखने के साथ मस्ती भरे गीत</p></div></li>
+        <li><span class="ico">🌙</span><div><strong>Lori &amp; Lullabies</strong><p>बच्चों को सुलाने वाली प्यारी लोरियाँ</p></div></li>
+        <li><span class="ico">🔤</span><div><strong>Alphabet &amp; Counting</strong><p>सीखने के साथ मस्ती भरे गीत</p></div></li>
       </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ============== FEATURED VIDEO ============== -->
-<section class="featured section" id="featured">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">⭐ Featured</span>
-      <h2 class="section-title">अभी देखिए हमारा सबसे पसंदीदा वीडियो</h2>
-    </div>
-    <div class="featured-wrap">
-      <div class="video-frame video-frame-lg">
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/4uXYgl6Gn4g?rel=0"
-          title="Kalu Madari Aaya — Hindi Balgeet | Funny Dancing Bear | Kids Rhymes | Tuki Tales"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen></iframe>
-      </div>
-      <div class="featured-info">
-        <h3>Kalu Madari Aaya | कालू मदारी आया</h3>
-        <p>Hindi Balgeet — Funny Dancing Bear, बच्चों के लिए एक प्यारा और मजेदार गीत। इस रंगीन cartoon video में कालू और उसका नाचता भालू आपके बच्चे का दिल जीत लेंगे! 🐻</p>
-        <a class="btn btn-ghost" href="https://www.youtube.com/watch?v=4uXYgl6Gn4g" target="_blank" rel="noopener">▶ Watch on YouTube</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============== VIDEO GRID ============== -->
-<section class="videos section" id="videos">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">▶ Popular Videos</span>
-      <h2 class="section-title">बच्चों के सबसे पसंदीदा गीत</h2>
-      <p class="section-sub">यहाँ देखिए Tuki Tales के सबसे लोकप्रिय rhymes और poems</p>
-    </div>
-    <div class="video-grid" id="videoGrid">
-      <!-- Populated by JS -->
-    </div>
-    <div class="videos-cta">
-      <a class="btn btn-primary btn-lg" href="https://www.youtube.com/@Tuki-Tales/videos" target="_blank" rel="noopener">
-        📺 See All Videos on YouTube
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============== CATEGORIES ============== -->
-<section class="categories section" id="categories">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">🎨 Content Categories</span>
-      <h2 class="section-title">यहाँ आपको क्या-क्या मिलेगा</h2>
-      <p class="section-sub">हर उम्र के बच्चों के लिए कुछ न कुछ — प्यार और मेहनत से बनाया गया</p>
-    </div>
-    <div class="category-grid">
-      <article class="cat-card cat-1">
-        <span class="cat-ico">🎵</span>
-        <h3>Nursery Rhymes</h3>
-        <p>बालगीत जो बच्चों को झूमने पर मजबूर कर देंगे — पारंपरिक और नए गीत।</p>
-      </article>
-      <article class="cat-card cat-2">
-        <span class="cat-ico">📖</span>
-        <h3>Kids Poems</h3>
-        <p>प्यारी कविताएँ जो बच्चों के दिल को छू जाएँ और उनकी सोच को बढ़ाएँ।</p>
-      </article>
-      <article class="cat-card cat-3">
-        <span class="cat-ico">📺</span>
-        <h3>Cartoon Videos</h3>
-        <p>रंगीन animations के साथ musical stories जो बच्चों को बाँध लेंगी।</p>
-      </article>
-      <article class="cat-card cat-4">
-        <span class="cat-ico">🌙</span>
-        <h3>Lori & Lullabies</h3>
-        <p>बच्चों को सुलाने वाली प्यारी लोरियाँ — मीठी और सुकून भरी।</p>
-      </article>
-      <article class="cat-card cat-5">
-        <span class="cat-ico">🔤</span>
-        <h3>Alphabet & Counting</h3>
-        <p>सीखने के साथ मस्ती — अक्षर और संख्याएँ गीतों के रूप में।</p>
-      </article>
-      <article class="cat-card cat-6">
-        <span class="cat-ico">🎉</span>
-        <h3>Family Friendly</h3>
-        <p>Fun & family-friendly content — पूरे परिवार के साथ देखने लायक।</p>
-      </article>
     </div>
   </div>
 </section>
@@ -249,19 +278,21 @@
   <div class="container footer-inner">
     <div class="footer-brand">
       <a href="#top" class="brand">
-        <span class="brand-mark" aria-hidden="true">🎵</span>
-        <span class="brand-text">Tuki<span class="brand-accent">Tales</span></span>
+        <img src="logo.png" alt="Tuki Tales" class="brand-logo brand-logo-footer" width="48" height="48" />
+        <span class="brand-text" style="color:#fff">Tuki<span class="brand-accent">Tales</span></span>
       </a>
       <p class="footer-tag">प्यारे बच्चों की दुनिया के रंगीन गीत 🎶</p>
     </div>
     <nav class="footer-links" aria-label="Footer">
+      <a href="#featured">Featured</a>
+      <a href="#popular">Popular</a>
+      <a href="#latest">Latest</a>
+      <a href="#shorts">Shorts</a>
+      <a href="#playlists">Playlists</a>
       <a href="#about">About</a>
-      <a href="#videos">Videos</a>
-      <a href="#categories">Categories</a>
-      <a href="https://www.youtube.com/@Tuki-Tales" target="_blank" rel="noopener">YouTube</a>
     </nav>
-    <div class="footer-social">
-      <a href="https://www.youtube.com/@Tuki-Tales" target="_blank" rel="noopener" aria-label="YouTube" class="social yt">▶</a>
+    <div class="footer-social" id="footerSocial">
+      <!-- Populated by JS from SOCIAL config -->
     </div>
   </div>
   <div class="footer-bottom">
