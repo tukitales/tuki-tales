@@ -28,14 +28,25 @@
   // ---------------- Social media links ----------------
   // Active links come from the YouTube channel description.
   // Empty entries are placeholders for future — disabled visually in the footer.
+  // Each icon is an inline SVG string (real brand glyph).
+  var SVG = {
+    youtube: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.5a3.02 3.02 0 0 0-2.12-2.14C19.5 3.85 12 3.85 12 3.85s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.5 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.5 3.02 3.02 0 0 0 2.12 2.14C4.5 20.15 12 20.15 12 20.15s7.5 0 9.38-.51A3.02 3.02 0 0 0 23.5 17.5 31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.5zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/></svg>',
+    instagram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.31-1.46.72-2.13 1.38C1.35 2.68.94 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13-.67-.66-1.34-1.07-2.13-1.38-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 16 12a4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg>',
+    ytmusic: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6.4" fill="#fff"/><circle cx="12" cy="12" r="2.2"/></svg>',
+    spotify: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 1 0 12 12A12 12 0 0 0 12 0zm5.5 17.32a.75.75 0 0 1-1.03.25 14.5 14.5 0 0 0-3.95-1.46 16.5 16.5 0 0 0-4.4-.3.75.75 0 0 1-.1-1.5 18 18 0 0 1 4.83.32 16 16 0 0 1 4.4 1.62.75.75 0 0 1 .25 1.07zm1.46-3.25a.94.94 0 0 1-1.29.3 17.5 17.5 0 0 0-4.66-1.76 18.5 18.5 0 0 0-5.1-.35.94.94 0 0 1-.12-1.87 20.3 20.3 0 0 1 5.6.38 19.5 19.5 0 0 1 5.18 1.96.94.94 0 0 1 .3 1.34zm.13-3.4a21.5 21.5 0 0 0-5.7-2.16 22 22 0 0 0-6.1-.42 1.13 1.13 0 0 1-.13-2.25 24 24 0 0 1 6.7.46 23.5 23.5 0 0 1 6.25 2.36 1.13 1.13 0 0 1 1.04 2z"/></svg>',
+    applemusic: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.4 5.34a3.06 3.06 0 0 0-2.16-2.17C19.32 2.55 12 2.55 12 2.55s-7.32 0-9.24.62A3.06 3.06 0 0 0 .6 5.34 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .6 6.66 3.06 3.06 0 0 0 2.16 2.17c1.92.62 9.24.62 9.24.62s7.32 0 9.24-.62a3.06 3.06 0 0 0 2.16-2.17A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.6-6.66zM9.6 15.6V8.4l6 3.6z"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.25h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>',
+    twitter: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.4l-5.8-7.58-6.63 7.58H.49l8.6-9.83L0 1.15h7.59l5.24 6.93 6.07-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3l13.31 17.41z"/></svg>'
+  };
+
   var SOCIALS = [
-    { key: 'youtube',    label: 'YouTube',         icon: '▶', url: 'https://www.youtube.com/@Tuki-Tales' },
-    { key: 'instagram',  label: 'Instagram',        icon: '📸', url: 'https://www.instagram.com/tukitales/' },
-    { key: 'ytmusic',    label: 'YouTube Music',    icon: '🎵', url: 'https://music.youtube.com/@Tuki-Tales' },
-    { key: 'spotify',    label: 'Spotify',          icon: '🎧', url: '' },                  // empty — to be added later
-    { key: 'applemusic', label: 'Apple Music',      icon: '🍎', url: '' },                  // empty — to be added later
-    { key: 'facebook',   label: 'Facebook',         icon: '👍', url: '' },                  // empty — to be added later
-    { key: 'twitter',    label: 'X (Twitter)',      icon: '🐦', url: '' }                   // empty — to be added later
+    { key: 'youtube',    label: 'YouTube',         svg: SVG.youtube,    url: 'https://www.youtube.com/@Tuki-Tales' },
+    { key: 'instagram',  label: 'Instagram',        svg: SVG.instagram,  url: 'https://www.instagram.com/tukitales/' },
+    { key: 'ytmusic',    label: 'YouTube Music',    svg: SVG.ytmusic,    url: 'https://music.youtube.com/@Tuki-Tales' },
+    { key: 'spotify',    label: 'Spotify',          svg: SVG.spotify,    url: '' },                  // empty — to be added later
+    { key: 'applemusic', label: 'Apple Music',      svg: SVG.applemusic, url: '' },                  // empty — to be added later
+    { key: 'facebook',   label: 'Facebook',         svg: SVG.facebook,   url: '' },                  // empty — to be added later
+    { key: 'twitter',    label: 'X (Twitter)',      svg: SVG.twitter,    url: '' }                   // empty — to be added later
   ];
 
   // ---------------- Seed data (used immediately + as fallback) ----------------
@@ -335,10 +346,20 @@
     playOverlay.appendChild(el('span', { class: 'video-play-btn', html: '▶' }));
     thumb.appendChild(playOverlay);
     card.appendChild(thumb);
+
+    // YouTube-feed style metadata row: [avatar] + (title + channel + views)
+    var metaRow = el('div', { class: 'video-meta-row' });
+    var avatar = el('div', { class: 'video-channel-avatar' });
+    avatar.appendChild(el('img', { src: 'logo.png', alt: 'Tuki Tales', loading: 'lazy' }));
+    metaRow.appendChild(avatar);
+
     var info = el('div', { class: 'video-info' });
     info.appendChild(el('h3', { class: 'video-title', title: v.title || '' }, v.title || ''));
-    info.appendChild(el('div', { class: 'video-channel', html: '<span>📺</span> Tuki Tales' }));
-    card.appendChild(info);
+    info.appendChild(el('div', { class: 'video-channel', html: 'Tuki Tales <span class="verified" aria-label="Verified">✓</span>' }));
+    metaRow.appendChild(info);
+
+    card.appendChild(metaRow);
+
     card.addEventListener('click', function () { openModal(v); });
     card.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(v); }
@@ -371,6 +392,8 @@
       frag.appendChild(buildShortCard(v));
     });
     track.appendChild(frag);
+    // Infinite scroll: clone cards onto the end so the slider loops seamlessly
+    setupInfiniteScroll(track);
     setupSliderArrows(track);
     setupShortsHoverPlay(track);
   }
@@ -412,11 +435,14 @@
   // - On mouseleave: stop and unload iframe, restore thumbnail
   // - On unmute button click: postMessage to unmute (allowed because it's a user gesture)
   // - On pause button click: postMessage to toggle play/pause
-  function setupShortsHoverPlay(track) {
+  function setupShortsHoverPlay(track, skipExisting) {
     var HOVER_DELAY = 250; // ms
     var timers = new WeakMap();
 
     $$('.short-card', track).forEach(function (card) {
+      if (skipExisting && card.dataset.hoverWired === '1') return;
+      card.dataset.hoverWired = '1';
+
       var id = card.dataset.shortId;
       if (!id) return;
 
@@ -592,7 +618,8 @@
         title: s.label,
         target: '_blank',
         rel: 'noopener',
-        html: s.icon
+        'data-brand': s.key,
+        html: s.svg
       });
       if (!s.url) {
         a.addEventListener('click', function (e) { e.preventDefault(); });
@@ -602,14 +629,56 @@
   }
 
   // ---------------- Slider arrows ----------------
+  // Setup infinite scroll: clone cards and silently reset scrollLeft when
+  // user scrolls past the original set. This makes the slider feel endless.
+  function setupInfiniteScroll(track) {
+    if (!track || track.dataset.infinite === '1') return;
+    track.dataset.infinite = '1';
+    track.classList.add('is-infinite');
+
+    // Wait a frame so children are measured
+    requestAnimationFrame(function () {
+      var cards = Array.prototype.slice.call(track.children);
+      if (!cards.length) return;
+      // Clone each card and append
+      cards.forEach(function (orig) {
+        var clone = orig.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        clone.classList.add('is-clone');
+        track.appendChild(clone);
+      });
+      // Re-wire hover handlers on clones too
+      setupShortsHoverPlay(track, true);
+    });
+
+    // On scroll, when we've scrolled past the original set, jump back to start.
+    track.addEventListener('scroll', function () {
+      var halfScroll = track.scrollWidth / 2;
+      if (track.scrollLeft >= halfScroll) {
+        // Silently jump back by half the scrollWidth (one set of clones)
+        track.scrollLeft -= halfScroll;
+      } else if (track.scrollLeft <= 0) {
+        // Allow left-arrow users to loop forward by jumping ahead by half
+        // (only trigger when scrollLeft is exactly 0 or negative)
+      }
+    }, { passive: true });
+  }
+
   function setupSliderArrows(track) {
     var slider = track.closest('.slider');
     if (!slider) return;
     var prevBtn = slider.querySelector('.slider-prev');
     var nextBtn = slider.querySelector('.slider-next');
     if (!prevBtn || !nextBtn) return;
+    var isInfinite = track.classList.contains('is-infinite');
 
     function updateButtons() {
+      if (isInfinite) {
+        // Infinite sliders never disable arrows
+        prevBtn.disabled = false;
+        nextBtn.disabled = false;
+        return;
+      }
       var maxScroll = track.scrollWidth - track.clientWidth - 4;
       prevBtn.disabled = track.scrollLeft <= 4;
       nextBtn.disabled = track.scrollLeft >= maxScroll;
@@ -619,7 +688,14 @@
       var cardW = card ? card.offsetWidth + 20 : 320;
       track.scrollBy({ left: dir * cardW * 1.5, behavior: 'smooth' });
     }
-    prevBtn.addEventListener('click', function () { scrollByCards(-1); });
+    prevBtn.addEventListener('click', function () {
+      // For infinite slider: if at very start, jump to cloned section first
+      if (isInfinite && track.scrollLeft <= 0) {
+        track.scrollLeft = track.scrollWidth / 2;
+        return;
+      }
+      scrollByCards(-1);
+    });
     nextBtn.addEventListener('click', function () { scrollByCards(1); });
     track.addEventListener('scroll', updateButtons, { passive: true });
     window.addEventListener('resize', updateButtons);
