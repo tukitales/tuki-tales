@@ -884,14 +884,26 @@
   // ---------------- GA4 click tracking ----------------
   // Track any element with [data-track] attribute as a GA4 custom event
   // Sends: event_name = data-track, event_location = data-location
+  // Robust against ad blockers: if gtag isn't loaded, events are silently
+  // dropped (no console errors). To verify GA4 is working, type `gtag` in
+  // the browser console — if it's a function, GA4 is loaded.
+  function safeGtag() {
+    if (typeof window.gtag === 'function') {
+      try {
+        window.gtag.apply(window, arguments);
+      } catch (e) { /* swallow — don't break UX */ }
+    }
+    // Else: ad blocker likely blocked googletagmanager.com — events are lost
+  }
+
   function setupClickTracking() {
     document.addEventListener('click', function (e) {
       var tracked = e.target.closest('[data-track]');
       if (!tracked) return;
       var eventName = tracked.getAttribute('data-track');
       var eventLocation = tracked.getAttribute('data-location') || 'unknown';
-      if (typeof gtag === 'function' && eventName) {
-        gtag('event', eventName, {
+      if (eventName) {
+        safeGtag('event', eventName, {
           'event_category': 'engagement',
           'event_label': eventLocation,
           'transport_type': 'beacon'
@@ -902,13 +914,11 @@
 
   // Track video modal opens (called from openModal)
   function trackVideoOpen(videoId, source) {
-    if (typeof gtag === 'function') {
-      gtag('event', 'video_open', {
-        'event_category': 'engagement',
-        'event_label': source || 'unknown',
-        'video_id': videoId
-      });
-    }
+    safeGtag('event', 'video_open', {
+      'event_category': 'engagement',
+      'event_label': source || 'unknown',
+      'video_id': videoId
+    });
   }
 
   // Track slider navigation
@@ -920,12 +930,10 @@
       var slider = arrow.closest('.slider');
       var track = slider ? slider.querySelector('.slider-track') : null;
       var sliderId = track ? track.id : 'unknown';
-      if (typeof gtag === 'function') {
-        gtag('event', 'slider_navigate', {
-          'event_category': 'engagement',
-          'event_label': sliderId + ':' + dir
-        });
-      }
+      safeGtag('event', 'slider_navigate', {
+        'event_category': 'engagement',
+        'event_label': sliderId + ':' + dir
+      });
     }, { passive: true });
   }
 
@@ -935,8 +943,8 @@
       var link = e.target.closest('.social-link:not(.is-disabled)');
       if (!link) return;
       var brand = link.getAttribute('data-brand');
-      if (typeof gtag === 'function' && brand) {
-        gtag('event', 'social_click', {
+      if (brand) {
+        safeGtag('event', 'social_click', {
           'event_category': 'engagement',
           'event_label': brand
         });
@@ -956,13 +964,11 @@
       milestones.forEach(function (m) {
         if (pct >= m && !fired[m]) {
           fired[m] = true;
-          if (typeof gtag === 'function') {
-            gtag('event', 'scroll_depth', {
-              'event_category': 'engagement',
-              'event_label': m + '%',
-              'value': m
-            });
-          }
+          safeGtag('event', 'scroll_depth', {
+            'event_category': 'engagement',
+            'event_label': m + '%',
+            'value': m
+          });
         }
       });
     }
