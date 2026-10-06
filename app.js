@@ -882,18 +882,24 @@
   }
 
   // ---------------- GA4 click tracking ----------------
-  // Track any element with [data-track] attribute as a GA4 custom event
-  // Sends: event_name = data-track, event_location = data-location
-  // Robust against ad blockers: if gtag isn't loaded, events are silently
-  // dropped (no console errors). To verify GA4 is working, type `gtag` in
-  // the browser console — if it's a function, GA4 is loaded.
+  // Track any element with [data-track] attribute as a GA4 custom event.
+  // Uses window.gtag (NOT local gtag) because the function is declared in
+  // the global scope by the inline script in index.html. Inside this IIFE,
+  // a plain `typeof gtag` check returns 'undefined' even when it's actually
+  // loaded — must check window.gtag explicitly.
+  // Falls back to pushing directly to window.dataLayer if gtag isn't ready
+  // yet (the async GA4 script may not have loaded). dataLayer is processed
+  // by gtag once it loads, so queued events will still fire.
   function safeGtag() {
-    if (typeof window.gtag === 'function') {
-      try {
+    try {
+      if (typeof window.gtag === 'function') {
         window.gtag.apply(window, arguments);
-      } catch (e) { /* swallow — don't break UX */ }
-    }
-    // Else: ad blocker likely blocked googletagmanager.com — events are lost
+      } else if (Array.isArray(window.dataLayer)) {
+        // gtag() does dataLayer.push(arguments) under the hood — replicate
+        window.dataLayer.push(arguments);
+      }
+      // Else: ad blocker blocked both gtag AND dataLayer — event is lost
+    } catch (e) { /* swallow — don't break UX */ }
   }
 
   function setupClickTracking() {
